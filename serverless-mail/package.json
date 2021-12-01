@@ -1,0 +1,24 @@
+{
+  "name": "@crocoderdev/serverless-mail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crocoder-dev/serverless-mail.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crocoder-dev/serverless-mail/issues"
+  },
+  "homepage": "https://github.com/crocoder-dev/serverless-mail#readme",
+  "devDependencies": {
+    "serverless": "2.67.0",
+    "serverless-dotenv-plugin": "3.10.0"
+  }
+}

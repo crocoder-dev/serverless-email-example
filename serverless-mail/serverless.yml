@@ -1,0 +1,31 @@
+service: sls-mail
+
+plugins:
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: development
+  region: eu-central-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+      Resource: ${self:provider.environment.SES_ARN}
+    - Effect: "Allow"
+      Action:
+       - "events:*"
+      Resource: "${self:provider.environment.EVENT_BUS_ARN}"
+
+functions:
+  sendMail:
+    handler: handler.sendEmail
+    description: Send email using SES service.
+    memorySize: 256
+    timeout: 5
+    events:
+      - eventBridge:
+          pattern:
+            detail-type:
+              - email.send

@@ -1,0 +1,18 @@
+{
+  "version": "0",
+  "id": "4aa882d4-be91-4a6a-99a5-93349e2318cc",
+  "detail-type": "email.send",
+  "source": "abc",
+  "account": "414717704904",
+  "time": "2021-01-15T12:54:24Z",
+  "region": "eu-west-2",
+  "resources": [],
+  "detail": {
+    "detailType": "email.send",
+    "id": "049faf7c-234f-4780-bed2-038d84311337",
+    "email": "hello@crocoder.dev",
+    "subject": "Hello!",
+    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas blandit orci in rhoncus dapibus. Fusce nisi ligula, imperdiet vitae posuere a, dictum in velit. Praesent ullamcorper nibh lacinia tincidunt pellentesque. Mauris diam leo, lobortis eget porta nec, laoreet vitae justo. Nam ac elit justo. Phasellus dictum in justo at consequat. Mauris quis libero purus. Vestibulum scelerisque metus eu ultricies dictum. Nullam finibus vel odio eget fringilla. Phasellus facilisis rutrum libero non cursus. Donec imperdiet ut ante nec viverra. Nulla consequat nec ipsum eget aliquet.",
+    "title": "Hello from Cinammon"
+  }
+}
