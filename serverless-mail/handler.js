@@ -1,5 +1,6 @@
 const fs = require('fs');
-const AWS = require('aws-sdk');
+const awsXRay = require('aws-xray-sdk');
+const AWS = awsXRay.captureAWS(require('aws-sdk'));
 const util = require('util');
 
 const emailService = new AWS.SES({ apiVersion: '2010-12-01' });

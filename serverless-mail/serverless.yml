@@ -9,6 +9,7 @@ provider:
   stage: development
   region: eu-central-1
   tracing:
+    apiGateway: true
     lambda: true
   iamRoleStatements:
     - Effect: Allow
@@ -23,7 +24,8 @@ provider:
       Action:
         - xray:PutTraceSegments
         - xray:PutTelemetryRecords
-      Resource: "*"
+      Resource:
+        - "*"
 functions:
   sendMail:
     handler: handler.sendEmail
