@@ -8,7 +8,6 @@
   "region": "eu-west-2",
   "resources": [],
   "detail": {
-    "detailType": "email.send",
     "id": "049faf7c-234f-4780-bed2-038d84311337",
     "email": "hello@crocoder.dev",
     "subject": "Hello!",

@@ -6,10 +6,10 @@ const emailService = new AWS.SES({ apiVersion: '2010-12-01' });
 
 const readFile = util.promisify(fs.readFile);
 
-const createEmailMessage = (title, email, body) => {
+const createEmailMessage = async (title, email, body) => {
   const message = await readFile('./index.html', 'utf8');
 
-  return message.replaceAll('{{title}}', title).replaceAll('{{email}}', email).replaceAll('{{body}}', body);
+  return message.replace(/{{title}}/g, title).replace(/{{email}}/g, email).replace(/{{body}}/g, body);
 }
 
 exports.sendEmail = async (event) => {
@@ -25,7 +25,7 @@ exports.sendEmail = async (event) => {
       Body: {
         Html: {
           Charset: 'UTF-8',
-          Data: createEmailMessage(title, email, body),
+          Data: await createEmailMessage(title, email, body),
         },
       },
       Subject: {

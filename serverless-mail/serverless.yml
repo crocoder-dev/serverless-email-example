@@ -8,6 +8,8 @@ provider:
   runtime: nodejs14.x
   stage: development
   region: eu-central-1
+  tracing:
+    lambda: true
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -17,7 +19,11 @@ provider:
       Action:
        - "events:*"
       Resource: "${self:provider.environment.EVENT_BUS_ARN}"
-
+    - Effect: Allow
+      Action:
+        - xray:PutTraceSegments
+        - xray:PutTelemetryRecords
+      Resource: "*"
 functions:
   sendMail:
     handler: handler.sendEmail
