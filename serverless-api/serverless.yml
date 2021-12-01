@@ -1,0 +1,90 @@
+service: sls-users
+
+plugins:
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: development
+  region: eu-central-1 
+  tracing:
+    apiGateway: true
+    lambda: true
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+       - "events:*"
+      Resource: "${self:provider.environment.EVENT_BUS_ARN}"
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+        - dynamodb:ListStreams
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
+    - Effect: Allow
+      Action:
+        - xray:PutTraceSegments
+        - xray:PutTelemetryRecords
+      Resource:
+        - "*"
+functions:
+  authorizer:
+    handler: src/authorizer.exec
+  users-create:
+    handler: src/users/create.exec
+    description: Create a new user.
+    memorySize: 256
+    timeout: 5
+    events:
+      - http:
+          authorizer: authorizer
+          path: users
+          method: post
+          cors: true
+  users-remove:
+    handler: src/users/remove.exec
+    description: Removes the user from the database.
+    memorySize: 256
+    timeout: 5
+    events:
+      - http:
+          authorizer: authorizer
+          path: users
+          method: delete
+          cors: true
+  notify-user:
+    handler: src/users/notifyUser.exec
+    description: Notifies users by email when his account is created or deleted.
+    memorySize: 256
+    timeout: 5
+    events:
+      - stream:
+          type: dynamodb
+          batchSize: 1
+          startingPosition: LATEST
+          maximumRetryAttempts: 1
+          arn:
+            Fn::GetAtt:
+              - UsersTable
+              - StreamArn  
+resources:
+  Resources:
+    UsersTable:
+        Type: 'AWS::DynamoDB::Table'
+        DeletionPolicy: Retain
+        Properties:
+          AttributeDefinitions:
+            -
+              AttributeName: id
+              AttributeType: S
+          KeySchema:
+            -
+              AttributeName: id
+              KeyType: HASH
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+          TableName: ${self:provider.environment.USERS_TABLE}
+          StreamSpecification:
+            StreamViewType: NEW_AND_OLD_IMAGES
