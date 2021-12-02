@@ -11,7 +11,6 @@ exports.exec = async (event) => {
 
     const { id, email, createdAt } = AWS.DynamoDB.Converter.unmarshall(event.Records[0].dynamodb.NewImage);
       
-
     if(eventName === 'INSERT') {
       subject = `Welcome to serverless-email-example`;
       body = `Your user with id ${id} was created at ${new Date(createdAt).toLocaleString()}`;
@@ -22,19 +21,23 @@ exports.exec = async (event) => {
       title = `Come back soon!`
     }
 
+    const entry = {
+      Source: "notifyUsers",
+      DetailType: "email.send",
+      Detail: JSON.stringify({
+        id,
+        email,
+        subject,
+        body,
+        title,
+      }),
+    };
+
+    console.warn('Creating new event', entry);
+
     await eventBridge.putEvents({
         Entries: [
-          {
-            Source: "notifyUsers",
-            DetailType: "email.send",
-            Detail: JSON.stringify({
-              id,
-              email,
-              subject,
-              body,
-              title,
-            }),
-          },
+          entry,
         ],
       }).promise();
 

@@ -1,4 +1,4 @@
-service: sls-users
+service: sls-api
 
 plugins:
   - serverless-dotenv-plugin
@@ -24,13 +24,29 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
     - Effect: Allow
       Action:
+        - dynamodb:PutItem
+        - dynamodb:ListStreams
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.POINTS_TABLE}"
+    - Effect: Allow
+      Action:
         - xray:PutTraceSegments
         - xray:PutTelemetryRecords
       Resource:
         - "*"
 functions:
-  authorizer:
+  auth:
     handler: src/authorizer.exec
+  points-create:
+    handler: src/points/create.exec
+    description: Create a new data point.
+    memorySize: 256
+    timeout: 5
+    events:
+      - http:
+          path: points
+          method: post
+          authorizer: auth
+          cors: true
   users-create:
     handler: src/users/create.exec
     description: Create a new user.
@@ -38,9 +54,9 @@ functions:
     timeout: 5
     events:
       - http:
-          authorizer: authorizer
           path: users
           method: post
+          authorizer: auth
           cors: true
   users-remove:
     handler: src/users/remove.exec
@@ -49,9 +65,9 @@ functions:
     timeout: 5
     events:
       - http:
-          authorizer: authorizer
           path: users
           method: delete
+          authorizer: auth
           cors: true
   notify-user:
     handler: src/users/notifyUser.exec
@@ -67,6 +83,21 @@ functions:
           arn:
             Fn::GetAtt:
               - UsersTable
+              - StreamArn
+  transform-points:
+    handler: src/points/transformPoints.exec
+    description: Transform point to data.
+    memorySize: 256
+    timeout: 5
+    events:
+      - stream:
+          type: dynamodb
+          batchSize: 1
+          startingPosition: LATEST
+          maximumRetryAttempts: 1
+          arn:
+            Fn::GetAtt:
+              - PointsTable
               - StreamArn  
 resources:
   Resources:
@@ -86,5 +117,23 @@ resources:
             ReadCapacityUnits: 1
             WriteCapacityUnits: 1
           TableName: ${self:provider.environment.USERS_TABLE}
+          StreamSpecification:
+            StreamViewType: NEW_AND_OLD_IMAGES
+    PointsTable:
+        Type: 'AWS::DynamoDB::Table'
+        DeletionPolicy: Retain
+        Properties:
+          AttributeDefinitions:
+            -
+              AttributeName: id
+              AttributeType: S
+          KeySchema:
+            -
+              AttributeName: id
+              KeyType: HASH
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+          TableName: ${self:provider.environment.POINTS_TABLE}
           StreamSpecification:
             StreamViewType: NEW_AND_OLD_IMAGES
