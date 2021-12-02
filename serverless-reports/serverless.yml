@@ -1,0 +1,64 @@
+service: sls-reports
+
+plugins:
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: development
+  region: eu-central-1
+  tracing:
+    apiGateway: true
+    lambda: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:UpdateItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DATA_TABLE}"
+    - Effect: "Allow"
+      Action:
+       - "events:*"
+      Resource: "${self:provider.environment.EVENT_BUS_ARN}"
+    - Effect: Allow
+      Action:
+        - xray:PutTraceSegments
+        - xray:PutTelemetryRecords
+      Resource:
+        - "*"
+functions:
+  saveData:
+    handler: src/saveData.exec
+    description: Saves Data to db.
+    memorySize: 256
+    timeout: 5
+    events:
+      - eventBridge:
+          pattern:
+            detail-type:
+              - point.created
+resources:
+  Resources:
+    DataTable:
+        Type: 'AWS::DynamoDB::Table'
+        DeletionPolicy: Retain
+        Properties:
+          AttributeDefinitions:
+            -
+              AttributeName: id
+              AttributeType: S
+            -
+              AttributeName: yearMonth
+              AttributeType: N
+          KeySchema:
+            -
+              AttributeName: id
+              KeyType: HASH
+            -
+              AttributeName: yearMonth
+              KeyType: RANGE
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+
+          TableName: ${self:provider.environment.DATA_TABLE}
