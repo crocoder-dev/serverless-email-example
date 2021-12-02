@@ -1,0 +1,15 @@
+{
+  "version": "0",
+  "id": "4aa882d4-be91-4a6a-99a5-93349e2318cc",
+  "detail-type": "point.created",
+  "source": "abc",
+  "account": "414717704904",
+  "time": "2021-01-15T12:54:24Z",
+  "region": "eu-west-2",
+  "resources": [],
+  "detail": {
+    "id": "2020", 
+    "yearMonth": "202003", 
+    "value": 13
+  }
+}

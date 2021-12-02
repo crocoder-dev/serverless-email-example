@@ -15,6 +15,7 @@ provider:
     - Effect: Allow
       Action:
         - dynamodb:UpdateItem
+        - dynamodb:Query
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DATA_TABLE}"
     - Effect: "Allow"
       Action:
@@ -37,6 +38,16 @@ functions:
           pattern:
             detail-type:
               - point.created
+  sendReports:
+    handler: src/sendReports.exec
+    description: Send Reports to users.
+    memorySize: 256
+    timeout: 5
+    events:
+      - eventBridge:
+          pattern:
+            detail-type:
+              - report.send
 resources:
   Resources:
     DataTable:
