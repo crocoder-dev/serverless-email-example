@@ -46,7 +46,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -56,7 +55,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]]
+![Product Name Screen Shot][product-screenshot]
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -66,9 +65,7 @@
 ### Built With
 
 * [Serverless](https://www.serverless.com/)
-* [Node.js](https://nodejs.org/en/)
-
-## Using
+* [Node.js](https://nodejs.org/en/)x
 
 * [AWS Lambda](https://aws.amazon.com/lambda/)
 * [Amazon DynamoDB](https://aws.amazon.com/dynamodb/)
@@ -87,20 +84,19 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-1. You need to have installed Node.js on your local machine.
+1. You need to have installed Node.js on your local machine.  
 2. You need to have installed Serverless on your local machine.
    ```sh
    npm install -g serverless
    ```
-3. You need to have an AWS account available.
-4. [Log in in the AWS & create an access key for CLI access.](https://console.aws.amazon.com/iam/home?region=eu-central-1#/security_credentials)
+3. You need to have an AWS account available.  
+4. [Log in in the AWS & create an access key for CLI access.](https://console.aws.amazon.com/iam/home?region=eu-central-1#/security_credentials)  
 5. Configure your Serverless credentials.
    ```sh
    serverless config credentials --provider provider --key key --secret secret
    ```
-6. Provision an Amazon EventBridge Bus.
-7. Setup a new email in Amazon Simple Email Service.
+6. Provision an Amazon EventBridge Bus.  
+7. Setup a new email in Amazon Simple Email Service.  
 
 ### Installation
 
@@ -120,19 +116,22 @@ This is an example of how to list things you need to use the software and how to
    cd serverless-mail & touch .env & cd..
    cd serverless-reports & touch .env & cd..
    ```
-4. Update .env file in serverless-api folder with these variables. USERS_TABLE & POINTS_TABLE will be the names of DynamoDB Tables created when serverless-api is deployed. AUTH_TOKEN is the value that should be put in `Authorization` header field to auth
+4. Update .env file in serverless-api folder with these variables. `USERS_TABLE` & `POINTS_TABLE` will be the names of DynamoDB Tables created when serverless-api is deployed. `AUTH_TOKEN` is the value that should be put in `Authorization` header field to use the deployed API. `EVENT_BUS_ARN` is the ARN of the previously created EventBridge Bus.
    ```sh
    USERS_TABLE=*table-name*
    POINTS_TABLE=*table-name*
    EVENT_BUS_ARN=*event-bus-arn*
    AUTH_TOKEN=*auth-token*
    ```
+5. Update .env file in serverless-mail folder with these variables. 
+   ```sh
+   ```
+5. Update .env file in serverless-reports folder with these variables. 
+   ```sh
+   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- USAGE EXAMPLES -->
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
@@ -141,23 +140,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [] Feature 1
-- [] Feature 2
-- [] Feature 3
-    - [] Nested Feature
-
-See the [open issues](https://github.com/crocoder-dev/serverless-email-example/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -173,41 +155,26 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- CONTACT -->
 ## Contact
 
-David Abram - [@twitter_handle](https://twitter.com/devabram) - david@crocoder.dev
+David Abram - [@devabram](https://twitter.com/devabram) - david@crocoder.dev
 
 Project Link: [https://github.com/crocoder-dev/serverless-email-example](https://github.com/crocoder-dev/serverless-email-example)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
 * [README Template taken from othneildrew/Best-README-Template](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
-* []()
-* []()
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/crocoder-dev/serverless-email-example.svg?style=for-the-badge
 [contributors-url]: https://github.com/crocoder-dev/serverless-email-example/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/crocoder-dev/serverless-email-example.svg?style=for-the-badge
