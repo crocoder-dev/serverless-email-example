@@ -14,7 +14,7 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - ses:SendEmail
+        - "ses:SendEmail"
       Resource: ${self:provider.environment.SES_ARN}
     - Effect: "Allow"
       Action:
