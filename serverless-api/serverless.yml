@@ -71,7 +71,7 @@ functions:
           cors: true
   notify-user:
     handler: src/users/notifyUser.exec
-    description: Notifies users by email when his account is created or deleted.
+    description: Notifies users by email when their account is created or deleted.
     memorySize: 256
     timeout: 5
     events:

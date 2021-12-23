@@ -34,7 +34,7 @@ exports.sendEmail = async (event) => {
         Data: subject,
       },
     },
-    Source: 'hello@crocoder.dev',
+    Source: process.env.EMAIL,
   };
 
   await emailService.sendEmail(params).promise();

@@ -22,7 +22,7 @@ exports.exec = async (event) => {
     }
 
     const entry = {
-      Source: "notifyUsers",
+      Source: "notifyUser",
       DetailType: "email.send",
       Detail: JSON.stringify({
         id,
@@ -34,7 +34,7 @@ exports.exec = async (event) => {
     };
 
     console.warn('Creating new event', entry);
-
+    
     await eventBridge.putEvents({
         Entries: [
           entry,
