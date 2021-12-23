@@ -21,8 +21,6 @@
     <a href="https://github.com/crocoder-dev/serverless-email-example"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/crocoder-dev/serverless-email-example">View Demo</a>
-    ·
     <a href="https://github.com/crocoder-dev/serverless-email-example/issues">Report Bug</a>
     ·
     <a href="https://github.com/crocoder-dev/serverless-email-example/issues">Request Feature</a>
@@ -59,9 +57,10 @@
 
 This is a project for educational purposes.
 
+* How to deploy & enable different AWS services with Serverless
 * How to use Amazon EventBridge for communication between multiple AWS Lambda Applications
 * How to use DynamoDB Streams to trigger AWS Lambda Functions 
-* How to trace the requests through your system with AWS X-Ray
+* How to trace the requests through this Serverless Email solution with AWS X-Ray
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -137,9 +136,25 @@ This is a project for educational purposes.
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+### serverless-api
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+serverless-api project deploys an instance of Amazon API Gateway. Every endpoint call is authorized by [`authorizer`](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-api/src/authorizer.js) lambda function. You need to add header `Authorization` to every request with the same value as `AUTH_TOKEN` env variable you specified in serverless-api/.env file.
+
+It provisions two endpoint `/points` & `/users`. `/points` endpoint supports `POST` requests with the body schema specified [here](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-api/src/points/create.json) and calls AWS Lambda with this [code](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-api/src/points/create.js). `/users` endpoint supports `POST` & `DELETE` requests with the body schema specified here: [POST](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-api/src/users/create.json) & [DELETE](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-api/src/users/remove.json) and calls AWS Lambdas with code located here: [POST](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-api/src/users/create.js) & [DELETE](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-api/src/users/remove.js).
+
+When new point or user is created and stored (or deleted) in DynamoDB tables, the changes are streamed to the [`notifyUser`](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-api/src/users/notifyUser.js) or [`transformPoints`](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-api/src/points/transformPoints.js) AWS Lambda functions. Both functions send events to the EventBridge bus instance. 
+
+### serverless-mail
+
+serverless-mail project deploys only one AWS Lambda function that runs [this code](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-mail/handler.js). This AWS Lambda functions triggers when there is an event with `detail-type: email.send` sent to EventBridge bus instance. The schema of the event can be found [here](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-mail/event.json).
+
+### serverless-reports
+
+serverless-reports project deploys two AWS Lambda functions: [`saveData`](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-reports/src/saveData.js) & [`sendReports`](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-reports/src/sendReports.js). 
+
+`saveData` is triggered when there is an event with `detail-type: point.created` sent to EventBridge bus instance. The schema of the event can be found [here](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-reports/src/saveData.json).
+
+`sendReports` is triggered when there is an event with `detail-type: report.send` sent to EventBridge bus instance. The schema of the event can be found [here](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-reports/src/sendReports.json).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
