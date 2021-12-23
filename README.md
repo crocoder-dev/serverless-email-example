@@ -57,15 +57,19 @@
 
 ![Product Name Screen Shot][product-screenshot]
 
+This is a project for educational purposes.
+
+* How to use Amazon EventBridge for communication between multiple AWS Lambda Applications
+* How to use DynamoDB Streams to trigger AWS Lambda Functions 
+* How to trace the requests through your system with AWS X-Ray
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 ### Built With
 
 * [Serverless](https://www.serverless.com/)
-* [Node.js](https://nodejs.org/en/)x
+* [Node.js](https://nodejs.org/en/)
 
 * [AWS Lambda](https://aws.amazon.com/lambda/)
 * [Amazon DynamoDB](https://aws.amazon.com/dynamodb/)
@@ -74,13 +78,7 @@
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- GETTING STARTED -->
 ## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
@@ -123,11 +121,16 @@ To get a local copy up and running follow these simple example steps.
    EVENT_BUS_ARN=*event-bus-arn*
    AUTH_TOKEN=*auth-token*
    ```
-5. Update .env file in serverless-mail folder with these variables. 
+5. Update .env file in serverless-mail folder with these variables. `SES_ARN` is the ARN of the previously setup Amazon Simple Email Service and `EMAIL` is the email address of the  `EMAIL` `EVENT_BUS_ARN` is the ARN of the previously created EventBridge Bus.
    ```sh
+   SES_ARN=*sas-arn*
+   EMAIL=*email-address*
+   EVENT_BUS_ARN=*event-bus-arn*
    ```
-5. Update .env file in serverless-reports folder with these variables. 
+5. Update .env file in serverless-reports folder with these variables.  `DATA_TABLE` will be the name of DynamoDB Table created when serverless-reports is deployed. `EVENT_BUS_ARN` is the ARN of the previously created EventBridge Bus.
    ```sh
+   DATA_TABLE=*table-name*
+   EVENT_BUS_ARN=*event-bus-arn*
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
