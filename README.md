@@ -156,6 +156,13 @@ serverless-reports project deploys two AWS Lambda functions: [`saveData`](https:
 
 `sendReports` is triggered when there is an event with `detail-type: report.send` sent to EventBridge bus instance. The schema of the event can be found [here](https://github.com/crocoder-dev/serverless-email-example/blob/main/serverless-reports/src/sendReports.json).
 
+
+### AWS X-Ray
+
+AWS X-Ray tracing is enabled for every lambda and managed services that can be deployed by serverless-reports, serverless-mail & serverless-api. You can see traces and service maps of the whole solution by visiting [this link](https://eu-central-1.console.aws.amazon.com/xray/home?region=eu-central-1#/service-map).
+
+![X-Ray Service Map example][x-ray-trace]
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Contributing
@@ -206,3 +213,4 @@ Project Link: [https://github.com/crocoder-dev/serverless-email-example](https:/
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/david-abram
 [product-screenshot]: images/architecture.png
+[x-ray-trace]: images/trace.png
